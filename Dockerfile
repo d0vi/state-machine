@@ -3,7 +3,7 @@
 ## docker build -t springio/imatia-state-machine .
 ## docker run springio/imatia-state-machine .
 
-FROM openjdk:8
+FROM openjdk:11-slim
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
