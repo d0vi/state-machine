@@ -1,0 +1,61 @@
+openapi: "3.0.3"
+
+info:
+  title: "Imatia State Machine"
+  description: "Microservice that dispatches order tracking events"
+  version: "0.0.1-SNAPSHOT"
+
+servers:
+  - url: "http://localhost:6080"
+    description: "local development server"
+
+tags:
+  - name: "Order"
+
+paths:
+  /order/tracking:
+    post:
+      tags:
+        - "Order"
+      summary: "dispatches a set of order events"
+      operationId: "dispatch"
+      requestBody:
+        description: "array of order events"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderEvents"
+        # For some odd reason, having more that one MIME Type per request
+        # is not supported yet by the OpenAPI Specification
+        # https://github.com/OpenAPITools/openapi-generator/issues/144
+        # application/xml:
+        #   schema:
+        #     $ref: "#/components/schemas/OrderEvents"
+      responses:
+        "201":
+          description: "created"
+        "400":
+          description: "invalid tracking event"
+
+components:
+  schemas:
+    OrderEvents:
+      type: "object"
+      properties:
+        orderTrackings:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderEvent"
+    OrderEvent:
+      type: "object"
+      properties:
+        orderId:
+          type: "integer"
+          format: "int64"
+        trackingStatusId:
+          type: "integer"
+          format: "int32"
+        changeStatusDate:
+          type: "string"
+          format: "date-time"
