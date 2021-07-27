@@ -16,6 +16,16 @@
 
 	<properties>
 		<java.version>11</java.version>
+
+		<!-- Dependencies -->
+		<lombok.version>1.18.20</lombok.version>
+		<jackson-databind-nullable.version>0.2.1</jackson-databind-nullable.version>
+		<validation-api.version>2.0.1.Final</validation-api.version>
+		<springfox-swagger2>3.0.0</springfox-swagger2>
+
+		<!-- Plugins -->
+		<openapi-generator-maven-plugin.version>5.1.0</openapi-generator-maven-plugin.version>
+		<jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -40,28 +50,26 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.20</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<!-- OpenAPI Generator specific dependencies -->
 		<dependency>
 			<groupId>org.openapitools</groupId>
 			<artifactId>jackson-databind-nullable</artifactId>
-			<version>0.2.1</version>
+			<version>${jackson-databind-nullable.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
-			<version>2.0.1.Final</version>
+			<version>${validation-api.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
-			<version>3.0.0</version>
+			<version>${springfox-swagger2}</version>
 		</dependency>
 
-		<!-- Testing dependencies -->
+		<!-- Testing -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -81,7 +89,7 @@
 			<plugin>
 				<groupId>org.openapitools</groupId>
 				<artifactId>openapi-generator-maven-plugin</artifactId>
-				<version>5.1.0</version>
+				<version>${openapi-generator-maven-plugin.version}</version>
 				<executions>
 					<execution>
 						<goals>
@@ -97,6 +105,31 @@
                                 <interfaceOnly>true</interfaceOnly>
                             </configOptions>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- JaCoCo -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco-maven-plugin.version}</version>
+				<configuration>
+					<excludes>
+						<exclude>com/imatia/statemachine/openapi/**/*</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
