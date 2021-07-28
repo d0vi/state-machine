@@ -1,0 +1,15 @@
+# IntelliJ
+.idea
+*.iml
+
+# Git
+.git
+.gitignore
+
+# Maven
+.mvn
+mvnw
+mvnw.cmd
+
+# Other
+*.md
