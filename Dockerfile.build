@@ -1,0 +1,21 @@
+## Compiles and runs the application
+## docker build -t springio/imatia-state-machine -f Dockerfile.build .
+## docker run -p 6080:6080 --rm springio/imatia-state-machine .
+
+FROM maven:latest as build
+
+LABEL maintainer="Jesús Iglesias Iglesias"
+
+COPY pom.xml .
+
+RUN mvn dependency:go-offline -B
+
+COPY src src
+
+RUN mvn package
+
+FROM openjdk:11-jre-slim
+
+COPY --from=build /target/state-machine.jar state-machine.jar
+
+CMD ["java", "-jar", "state-machine.jar"]
